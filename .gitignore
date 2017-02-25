@@ -87,3 +87,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# ignor .keep which is used for the git record of empty directory
+.keep
