@@ -10,7 +10,7 @@ import numpy as np
 dataset_dir = '../data/'
 dataset_url = 'http://ufldl.stanford.edu/housenumbers/'
 dataset = ['train_32x32.mat', 'test_32x32.mat']
-train_mean_path = 'data/train_32x32_mean.npy'
+train_mean_path = '../data/train_32x32_mean.npy'
 # dataset = ['train_32x32.mat', 'test_32x32.mat', 'extra_32x32.mat']
 
 # Download the dataset
