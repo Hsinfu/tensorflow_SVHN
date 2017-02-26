@@ -1,7 +1,8 @@
 import numpy as np
 import tensorflow as tf
 from scipy.io import loadmat
-from ..svhn import DataSet
+
+from svhn import DataSet
 from model import *
 
 
@@ -42,8 +43,8 @@ with tf.Session(config=config) as sess:
                 feed_dict={
                     x: batch_x,
                     y: batch_y,
-                    keep_prob1: keep_prob1,
-                    keep_prob2: keep_prob2})
+                    fc1_dropout: keep_prob1,
+                    fc2_dropout: keep_prob2})
 
             # Compute average loss
             avg_loss += lo / total_batch

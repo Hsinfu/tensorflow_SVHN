@@ -4,7 +4,7 @@ from tensorflow.python.framework import dtypes
 
 class DataSet(object):
 
-    def __init__(self, data, mean=None, dtype=dtypes.float32, reshape=True):
+    def __init__(self, data, mean=0, dtype=dtypes.float32, reshape=True):
         """Construct a DataSet.
         `dtype` can be either `uint8` to leave the input as `[0, 255]`,
         or `float32` to rescale into `[0, 1]`.
@@ -33,8 +33,7 @@ class DataSet(object):
 
         # Minus mean
         images = images.astype(np.float32)
-        if mean:
-            images = [image - mean for image in images]
+        images = [image - mean for image in images]
 
         # Convert images pixels from [0, 255] -> [0.0, 1.0].
         if dtype == dtypes.float32:

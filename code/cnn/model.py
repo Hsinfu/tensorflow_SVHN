@@ -8,9 +8,9 @@ n_classes = 10
 # tf Graph input
 x = tf.placeholder(tf.float32, [None, n_input])
 y = tf.placeholder(tf.float32, [None, n_classes])
-# dropout (keep probability)
-keep_prob1 = tf.placeholder(tf.float32)
-keep_prob2 = tf.placeholder(tf.float32)
+# dropout (the value is the probability to keep neuron)
+fc1_dropout = tf.placeholder(tf.float32)
+fc2_dropout = tf.placeholder(tf.float32)
 
 
 # Create some wrappers for simplicity
@@ -27,14 +27,14 @@ def maxpool2d(x, k=2):
 
 
 # Create model
-def conv_net(x, weights, biases, keep_prob1, keep_prob2):
+def conv_net(x, weights, biases, fc1_dropout, fc2_dropout):
     # Reshape input picture
     x = tf.reshape(x, shape=[-1, 32, 32, 3])
 
     # Convolution Layers
     conv1_1 = conv2d(x, weights['wc1_1'], biases['bc1_1'])
     conv1_2 = conv2d(conv1_1, weights['wc1_2'], biases['bc1_2'])
-    conv1_3 = conv2d(conv1_2, weights['wc1_3'], biases['bc1_3']),
+    conv1_3 = conv2d(conv1_2, weights['wc1_3'], biases['bc1_3'])
     pool1 = maxpool2d(conv1_3)
 
     conv2_1 = conv2d(pool1, weights['wc2_1'], biases['bc2_1'])
@@ -52,11 +52,11 @@ def conv_net(x, weights, biases, keep_prob1, keep_prob2):
     fc1 = tf.reshape(pool3, [-1, weights['wd1'].get_shape().as_list()[0]])
     fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
     fc1 = tf.nn.relu(fc1)
-    fc1 = tf.nn.dropout(fc1, keep_prob1)
+    fc1 = tf.nn.dropout(fc1, fc1_dropout)
 
     fc2 = tf.add(tf.matmul(fc1, weights['wd2']), biases['bd2'])
     fc2 = tf.nn.relu(fc2)
-    fc2 = tf.nn.dropout(fc2, keep_prob2)
+    fc2 = tf.nn.dropout(fc2, fc2_dropout)
 
     # Output, class prediction
     out = tf.add(tf.matmul(fc2, weights['out']), biases['out'])
@@ -95,7 +95,7 @@ biases = {
 }
 
 # Construct model
-pred = conv_net(x, weights, biases, keep_prob1, keep_prob2)
+pred = conv_net(x, weights, biases, fc1_dropout, fc2_dropout)
 pred_class = tf.argmax(pred, 1)
 
 # Define loss and optimizer
@@ -107,7 +107,7 @@ correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
 # Initializing the variables
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 # Add ops to save and restore all the variables.
 saver = tf.train.Saver(sharded=False)

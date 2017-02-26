@@ -1,7 +1,8 @@
 import numpy as np
 import tensorflow as tf
 from scipy.io import loadmat
-from ..svhn import DataSet
+
+from svhn import DataSet
 from model import *
 
 
@@ -12,6 +13,9 @@ test_dataset = DataSet(test_mat, train_mean)
 
 # Testing setting
 test_batch_size = 10
+# keep_prob should be 1 while testing
+keep_prob1 = 1
+keep_prob2 = 1
 
 # Launch the graph
 # allow_growth to set the memory growth while use
@@ -33,7 +37,11 @@ with tf.Session(config=config) as sess:
         # Session run on GPU/CPU to get the ans, loss, acc
         ans, lo, acc = sess.run(
             [pred_class, loss, accuracy],
-            feed_dict={x: batch_x, y: batch_y, keep_prob1: 1, keep_prob2: 1})
+            feed_dict={
+                x: batch_x,
+                y: batch_y,
+                fc1_dropout: keep_prob1,
+                fc2_dropout: keep_prob2})
 
         # Store the ans and compute average loss and acc
         answers.extend(ans)
