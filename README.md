@@ -1,5 +1,5 @@
-# tensorflow_SVHN_example
-This is a simple example to train and test the Street View House Numbers (SVHN) Dataset (http://ufldl.stanford.edu/housenumbers/).
+# tensorflow SVHN example
+This is a tensorflow example to train and test the SVHN Dataset (Street View House Numbers Dataset http://ufldl.stanford.edu/housenumbers/).
 
 # Here are some notes.
  * train only on train_32x32.mat (without extra_32x32.mat)
@@ -9,6 +9,7 @@ This is a simple example to train and test the Street View House Numbers (SVHN) 
  * running well on tensorflow gpu version 0.12
 
 # Run NN on SVHN
+The NN architecture is simple two-layer perceptron
 ```bash
 cd code/
 python download_svhn.py
@@ -17,6 +18,7 @@ python train.py && python test.py
 ```
 
 # Run CNN on SVHN
+The CNN architecture is based from VGGNet
 ```bash
 cd code/
 python download_svhn.py
